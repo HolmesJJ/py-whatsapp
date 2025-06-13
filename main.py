@@ -5,8 +5,8 @@ import pandas as pd
 
 
 def test():
-    pywhatkit.sendwhatmsg_instantly('+65', 'Hi, how are you?', 15, True, 2)
-    pywhatkit.sendwhatmsg_instantly('+65', 'Hi, how are you?', 15, True, 2)
+    pywhatkit.sendwhatmsg_instantly('+65', 'Hi, how are you?', 20, True, 2)
+    pywhatkit.sendwhatmsg_instantly('+65', 'Hi, how are you?', 20, True, 2)
 
 
 def get_folder_path():
@@ -34,7 +34,7 @@ def run():
                         col10 = row.iloc[8]
                         print(f'---')
                         print(f'Sending message to phone {col2} in 10 seconds:')
-                        pywhatkit.sendwhatmsg_instantly(f'+65{col2}', col10, 10, True, 2)
+                        pywhatkit.sendwhatmsg_instantly(f'+65{col2}', col10, 20, True, 2)
                         print('Message:', col10)
                         print(f'---')
             except Exception as e:
