@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import argparse
 import pywhatkit
 
@@ -76,7 +77,15 @@ def run(wait=DEFAULT_WAIT):
                     try:
                         pywhatkit.sendwhatmsg_instantly(f'+{full_number}', message, wait, True)
                         sent_cell.value = 1
+                        print(f'! Updating Excel file: {file_name}. Please DO NOT close or terminate the program...')
                         wb.save(file_path)
+                        print(f'! Excel file {file_name} has been updated. '
+                              f'You may now safely close or terminate the program...')
+                        print('→ Waiting 3 seconds...', end='', flush=True)
+                        for i in range(3, 0, -1):
+                            print(f' {i}...', end='', flush=True)
+                            time.sleep(1)
+                        print()
                     except Exception as e3:
                         print(f'! Send failed: {e3}')
                 wb.close()
