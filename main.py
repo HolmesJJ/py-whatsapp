@@ -81,8 +81,8 @@ def run(wait=DEFAULT_WAIT):
                         wb.save(file_path)
                         print(f'! Excel file {file_name} has been updated. '
                               f'You may now safely close or terminate the program...')
-                        print('→ Waiting 3 seconds...', end='', flush=True)
-                        for i in range(3, 0, -1):
+                        print('→ Waiting 5 seconds...', end='', flush=True)
+                        for i in range(5, 0, -1):
                             print(f' {i}...', end='', flush=True)
                             time.sleep(1)
                         print()
