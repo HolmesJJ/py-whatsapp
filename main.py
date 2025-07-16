@@ -34,6 +34,18 @@ def make_backup(wb_write, master_path):
     backup_path = os.path.join(folder, backup_name)
     wb_write.save(backup_path)
     print(f'✓ Backup saved as {os.path.join(BACKUP_DIR, backup_name)}')
+    all_backups = [
+        os.path.join(folder, f) for f in os.listdir(folder)
+        if f.startswith(base_name) and f.endswith('.xlsx')
+    ]
+    if len(all_backups) > 5:
+        all_backups.sort(key=os.path.getmtime, reverse=True)
+        to_delete = all_backups[5:]
+        for old_file in to_delete:
+            try:
+                os.remove(old_file)
+            except Exception as e:
+                print(f'❌ Failed to delete {os.path.basename(old_file)}: {e}')
 
 
 def run(wait=DEFAULT_WAIT):
