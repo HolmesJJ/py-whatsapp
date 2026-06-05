@@ -8,9 +8,10 @@ from datetime import datetime
 from openpyxl import load_workbook
 
 
-DEFAULT_WAIT = 20
+DEFAULT_WAIT = 40
 MASTER_FILE = 'Master.xlsx'
 BACKUP_DIR = 'backups'
+ARGS_FILE = 'DO NOT TOUCH.txt'
 
 
 def test():
@@ -120,9 +121,31 @@ def run(wait=DEFAULT_WAIT):
     print('--- End ---')
 
 
+def load_args_file():
+    """Read key=value pairs from args.txt next to the executable/script."""
+    folder = get_folder_path()
+    args_path = os.path.join(folder, ARGS_FILE)
+    config = {}
+    if os.path.exists(args_path):
+        print(f'--- Reading {ARGS_FILE} ---')
+        with open(args_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                if '=' in line:
+                    key, value = line.split('=', 1)
+                    config[key.strip()] = value.strip()
+    else:
+        print(f'⚠ {ARGS_FILE} not found in {folder}, using defaults.')
+    return config
+
+
 def parse_args():
+    file_config = load_args_file()
     parser = argparse.ArgumentParser(description='Bulk-send WhatsApp messages based on Excel files.')
-    parser.add_argument('--wait', type=int, default=DEFAULT_WAIT,
+    parser.add_argument('--wait', type=int,
+                        default=int(file_config.get('wait', DEFAULT_WAIT)),
                         help=f'Wait (seconds) before sending. The default is {DEFAULT_WAIT} seconds.')
     return parser.parse_args()
 
@@ -130,4 +153,8 @@ def parse_args():
 if __name__ == '__main__':
     # pyinstaller --onefile --console --hidden-import=pywhatkit --hidden-import=openpyxl --name "DO NOT TOUCH" main.py
     args = parse_args()
+    print('--- Args ---')
+    print(f'  wait = {args.wait}s')
+    print('-------------')
+    print()
     run(args.wait)
