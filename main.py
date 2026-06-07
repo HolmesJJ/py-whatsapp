@@ -95,11 +95,11 @@ def run(wait=DEFAULT_WAIT):
             mobile = str(mobile_cell.value).strip()
             message = str(message_cell.value).strip()
             name = str(name_cell.value).strip()
-            full_number = f'+65{mobile}'
+            full_number = mobile if mobile.startswith('+') else f'+{mobile}'
             print()
             print(f'→ {name} | {full_number} | wait={wait}s | message={message[:30]}...')
             try:
-                pywhatkit.sendwhatmsg_instantly(f'+{full_number}', message, wait, True)
+                pywhatkit.sendwhatmsg_instantly(full_number, message, wait, True)
                 sent_cell.value = 1
                 print(f'! Updating Excel file: {MASTER_FILE}. Please DO NOT close or terminate the program...')
                 wb_write.save(master_path)
